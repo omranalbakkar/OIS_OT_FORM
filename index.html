@@ -1009,36 +1009,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-// Validate date format (dd/MM/yyyy) and that it's not in the future
+// Validate date is not greater than today
 if (inputs.date) {
-    // First validate the format dd/MM/yyyy
-    const datePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-    
-    if (!datePattern.test(inputs.date)) {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    // Input is yyyy-mm-dd → convert to a Date object
+    const inputDate = new Date(inputs.date + "T00:00:00");
+
+    if (inputDate > today) {
         isValid = false;
         entry.querySelector('.date-input').style.borderColor = 'var(--danger)';
-    } else {
-        // Parse the date in dd/MM/yyyy format
-        const [day, month, year] = inputs.date.split('/').map(Number);
-        const inputDate = new Date(year, month - 1, day);
-        inputDate.setHours(0, 0, 0, 0); // Reset time to midnight
-        
-        // Additional validation for valid date (e.g., 31/02/2023 is invalid)
-        if (inputDate.getDate() !== day || inputDate.getMonth() + 1 !== month) {
-            isValid = false;
-            entry.querySelector('.date-input').style.borderColor = 'var(--danger)';
-        } else {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Reset time to midnight for comparison
-            
-            // Validate date is not in the future
-            if (inputDate > today) {
-                isValid = false;
-                entry.querySelector('.date-input').style.borderColor = 'var(--danger)';
-            }
-        }
     }
 }
+
             
             
             entryData.push(inputs);
@@ -1235,6 +1219,7 @@ if (inputs.date) {
 </script>
 </body>
 </html>
+
 
 
 
