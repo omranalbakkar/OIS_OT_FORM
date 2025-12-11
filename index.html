@@ -1008,6 +1008,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     entry.querySelector('.hours-input').style.borderColor = 'var(--danger)';
                 }
             }
+
+            // Validate date is not in the future
+            if (inputs.date) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const inputDate = new Date(inputs.date);
+                
+                if (inputDate > today) {
+                    isValid = false;
+                    const dateInput = entry.querySelector('.date-input');
+                    dateInput.style.borderColor = 'var(--danger)';
+                    dateInput.setAttribute('title', 'Date cannot be in the future');
+                }
+            }
+            
             
             entryData.push(inputs);
         });
@@ -1203,6 +1219,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
 
 
